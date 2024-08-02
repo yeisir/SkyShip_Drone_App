@@ -89,12 +89,31 @@ class MainActivity : ComponentActivity(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_ADMIN) != PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                arrayOf(
+                    Manifest.permission.BLUETOOTH,
+                    Manifest.permission.BLUETOOTH_ADMIN,
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.BLUETOOTH_CONNECT
+                ),
+                PERMISSION_REQUEST_CODE)
+        }
+
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
         if (bluetoothAdapter == null) {
             Toast.makeText(this, "Este dispositivo no soporta Bluetooth", Toast.LENGTH_SHORT).show()
             finish()
             return
         }
+
 
         setContent {
             AppTheme {
@@ -118,6 +137,7 @@ class MainActivity : ComponentActivity(), OnMapReadyCallback {
         mapView = MapView(this)
         mapView.onCreate(savedInstanceState)
     }
+
 
     @SuppressLint("MissingPermission")
     @Composable
@@ -251,6 +271,11 @@ class MainActivity : ComponentActivity(), OnMapReadyCallback {
 
     @SuppressLint("MissingPermission")
     private fun connectBluetooth() {
+        if (bluetoothAdapter == null) {
+            Toast.makeText(this, "Este dispositivo no soporta Bluetooth", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         if (bluetoothAdapter?.isEnabled == false) {
             val enableBluetoothIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
             startActivityForResult(enableBluetoothIntent, 1)
@@ -271,6 +296,7 @@ class MainActivity : ComponentActivity(), OnMapReadyCallback {
             }
         }
     }
+
 
     private fun sendDataToESP32() {
         if (isBluetoothConnected) {
@@ -465,6 +491,10 @@ class MainActivity : ComponentActivity(), OnMapReadyCallback {
 
     private fun showToast(message: String) {
         Toast.makeText(this@MainActivity, message, Toast.LENGTH_SHORT).show()
+    }
+
+    companion object {
+        private const val PERMISSION_REQUEST_CODE = 1001
     }
 
 }
