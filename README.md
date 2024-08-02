@@ -14,19 +14,20 @@ SkyShip Drone App version 1.0 is an Android application designed to interact wit
 -Android SDK 34 or higher
 
 ### Required Permissions.
--Bluetooth
--Location Access
+- Bluetooth
+- Location Access
 
 These permissions are specified in the `AndroidManifest.xml` file.
 
 ## Installation
 
 1. Clone the repository:
+   ```sh
     git clone git@github.com:yeisir/SkyShip_Drone_App_v.1.git
-2. Open the project in Android Studio.
-3. Set up dependencies:
+3. Open the project in Android Studio.
+4. Set up dependencies:
 Ensure all required dependencies are included in your build.gradle file for successful project compilation.
-4. Add Google Maps API Key:
+5. Add Google Maps API Key:
 Insert your Google Maps API key into the AndroidManifest.xml file.
 
 ## Usage
