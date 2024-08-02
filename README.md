@@ -1,6 +1,6 @@
-# SkyShip Drone App v-1.0
+# SkyShip Drone App v.1
 
-SkyShip Drone App is an Android application designed to interact with a Bluetooth device to receive location data and display it on a Google Map. The app allows users to connect to the device, input height and air time values, send data, and visualize the drone's location on a map.
+SkyShip Drone App version 1.0 is an Android application designed to interact with a Bluetooth device to receive location data and display it on a Google Map. The app allows users to connect to the device, input height and air time values, send data, and visualize the drone's location on a map.
 
 ## Features
 
