@@ -105,6 +105,11 @@ class MainActivity : ComponentActivity(), OnMapReadyCallback {
                         SkyShipApp()
                     }
 
+                    if (showNoSignalDialog) {
+                        NoSignalAlertDialog(
+                            onDismiss = { showNoSignalDialog = false }
+                        )
+                    }
                 }
             }
         }
@@ -170,27 +175,27 @@ class MainActivity : ComponentActivity(), OnMapReadyCallback {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 OutlinedTextField(
-                value = height,
-                onValueChange = { newValue ->
-                    // Validar y limitar el valor de altura
-                    val cleanedValue = newValue.filter { it.isDigit() || it == '.' }
-                    val numericValue = cleanedValue.toDoubleOrNull()
+                    value = height,
+                    onValueChange = { newValue ->
+                        // Validar y limitar el valor de altura
+                        val cleanedValue = newValue.filter { it.isDigit() || it == '.' }
+                        val numericValue = cleanedValue.toDoubleOrNull()
 
-                    if (numericValue != null && numericValue in 0.0..5.0) {
-                        height = cleanedValue
-                    } else if (cleanedValue.isEmpty()) {
-                        height = cleanedValue
-                    }
-                },
-                label = { Text("Altura (0-5m)") },
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(end = 8.dp),
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    keyboardType = KeyboardType.Number
-                ),
-                maxLines = 1
-            )
+                        if (numericValue != null && numericValue in 0.0..5.0) {
+                            height = cleanedValue
+                        } else if (cleanedValue.isEmpty()) {
+                            height = cleanedValue
+                        }
+                    },
+                    label = { Text("Altura (0-5m)") },
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(end = 8.dp),
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        keyboardType = KeyboardType.Number
+                    ),
+                    maxLines = 1
+                )
 
                 // Caja de entrada para tiempo en el aire
                 OutlinedTextField(
@@ -351,6 +356,29 @@ class MainActivity : ComponentActivity(), OnMapReadyCallback {
         }
     }
 
+
+    @Composable
+    fun NoSignalAlertDialog(onDismiss: () -> Unit) {
+        AlertDialog(
+            onDismissRequest = onDismiss,
+            title = { Text("No se recibe señal GPS.") },
+            text = { Text("Por favor, dirígete a un lugar más despejado y vuelve a intentarlo.") },
+            confirmButton = {
+                Button(
+                    onClick = onDismiss,
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = Color(0xFF9C27B0)
+                    )
+                ) {
+                    Text("Reintentar", color = Color.White)
+                }
+            }
+        )
+    }
+
+
+
     private fun processReceivedData(data: String) {
         if (data.contains("No se recibe señal GPS")) {
             sendNoSignalMessage()
@@ -420,26 +448,27 @@ class MainActivity : ComponentActivity(), OnMapReadyCallback {
 
 
     override fun onResume() {
-            super.onResume()
-            mapView.onResume()
+        super.onResume()
+        mapView.onResume()
     }
 
     override fun onPause() {
-            super.onPause()
-            mapView.onPause()
+        super.onPause()
+        mapView.onPause()
     }
 
     override fun onDestroy() {
-            super.onDestroy()
-            mapView.onDestroy()
+        super.onDestroy()
+        mapView.onDestroy()
     }
 
 
     private fun showToast(message: String) {
-            Toast.makeText(this@MainActivity, message, Toast.LENGTH_SHORT).show()
+        Toast.makeText(this@MainActivity, message, Toast.LENGTH_SHORT).show()
     }
 
 }
+
 
 
 
