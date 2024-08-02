@@ -32,7 +32,7 @@ These permissions are specified in the `AndroidManifest.xml` file.
 
 # Note:
 
-I hope this helps your project. If you have any questions, don't hesitate to contact me :)
+Hope this helps your project. If you have any questions, don't hesitate to contact me :)
 
 
 
